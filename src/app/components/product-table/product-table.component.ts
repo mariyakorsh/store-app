@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { ValueService } from '../../services/values.service';
 import Product from 'src/app/models/product.model';
 import { Observable } from 'rxjs';
 import { from } from 'rxjs';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-product-table',
@@ -13,6 +14,8 @@ export class ProductTableComponent implements OnInit {
   public products: Product[];
   public checkedProducts: Product[] = [];
   constructor(private valueService: ValueService) {}
+
+  @Output() changeCount = new EventEmitter<Number>();
 
   ngOnInit() {
    this.products = this.valueService.getValues();
@@ -36,5 +39,6 @@ export class ProductTableComponent implements OnInit {
     this.products = this.products.filter((product) => {
       return !this.checkedProducts.includes(product);
     });
+    this.changeCount.emit(this.checkedProducts.length);
   }
 }
