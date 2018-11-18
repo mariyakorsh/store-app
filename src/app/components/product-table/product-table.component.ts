@@ -4,6 +4,7 @@ import Product from 'src/app/models/product.model';
 import { Observable } from 'rxjs';
 import { from } from 'rxjs';
 import { EventEmitter } from '@angular/core';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-product-table',
@@ -13,6 +14,7 @@ import { EventEmitter } from '@angular/core';
 export class ProductTableComponent implements OnInit {
   public products: Product[];
   public checkedProducts: Product[] = [];
+  public summary = 0;
   constructor(private valueService: ValueService) {}
 
   @Output() changeCount = new EventEmitter<Number>();
@@ -31,7 +33,8 @@ export class ProductTableComponent implements OnInit {
           return item !== product;
         });
       }
-      console.log(this.checkedProducts);
+      const prices = this.checkedProducts.map(p => p.price);
+      this.summary = +prices.reduce((summ, price) => summ + price, 0).toFixed(2);
     };
   }
 
@@ -40,5 +43,12 @@ export class ProductTableComponent implements OnInit {
       return !this.checkedProducts.includes(product);
     });
     this.changeCount.emit(this.checkedProducts.length);
+  }
+
+  getColorRow(product: Product, index: number): string {
+    if (this.checkedProducts.includes(product)) {
+      return 'checkedRow';
+    }
+    return index % 2 === 0 ? 'evenRow' : 'oddRow';
   }
 }

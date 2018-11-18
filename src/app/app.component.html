@@ -1,3 +1,9 @@
-<header>{{count}}</header>
+<header>
+  <span>STORE APP</span>
+  <div class="cart">
+    <span>{{count}}</span>
+    <i class="material-icons">shopping_cart</i>
+  </div>
+</header>
 <app-product-table (changeCount)="OnChangeCount($event)"></app-product-table>
 <footer></footer>

@@ -1,0 +1,41 @@
+.container {
+    width: 80%;
+    margin: auto;
+    .table-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        th {
+            text-align: left;
+        }
+        .evenRow {
+            background-color: #fff0e8;
+        }
+        .oddRow {
+            background-color: #f0cac0;
+        }
+        .checkedRow {
+            background-color: #b08a85;
+            color: white;
+        }
+    }
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            background-color: #f0cac0;
+            border: none;
+            outline: none;
+            border-radius: 5%;
+            cursor: pointer;
+            color: #442b2d;
+            width: 100px;
+        } 
+    }
+}
+.emptyTable {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    align-items: center;
+}

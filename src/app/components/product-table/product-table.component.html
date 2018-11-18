@@ -1,19 +1,32 @@
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Group</th>
-      <th>Name</th>
-      <th>Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let product of products">
-      <td><input type="checkbox" (change)="checkProduct(product)()"/></td>
-      <td>{{product.group}}</td>
-      <td>{{product.name}}</td>
-      <td>{{product.price}}</td>
-    </tr>
-  </tbody>
-</table>
-<button (click)="AddToCart()">Add to Cart</button>
+<div class="container" *ngIf="products.length">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Group</th>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products; index as i" [ngClass]="getColorRow(product, i)">
+          <td><input type="checkbox" (change)="checkProduct(product)()" /></td>
+          <td>{{product.group}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.price}}</td>
+        </tr>
+        <tr>
+          <td>Summary</td>
+          <td>{{summary}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="button-container">
+    <button (click)="AddToCart()">Add to Cart</button>
+  </div>
+</div>
+<div class="emptyTable" *ngIf="!products.length">
+  THANK YOU FOR YOUR PURCHASE!
+</div>
