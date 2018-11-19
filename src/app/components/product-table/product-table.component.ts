@@ -1,10 +1,8 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { ValueService } from '../../services/values.service';
-import Product from 'src/app/models/product.model';
-import { Observable } from 'rxjs';
-import { from } from 'rxjs';
 import { EventEmitter } from '@angular/core';
-import { ThrowStmt } from '@angular/compiler';
+import Value from 'src/app/models/value.model';
+import ViewValue from 'src/app/models/viewValue.model';
 
 @Component({
   selector: 'app-product-table',
@@ -12,43 +10,56 @@ import { ThrowStmt } from '@angular/compiler';
   styleUrls: ['./product-table.component.scss']
 })
 export class ProductTableComponent implements OnInit {
-  public products: Product[];
-  public checkedProducts: Product[] = [];
+  public values: ViewValue[] = [];
+  public checkedValues: ViewValue[] = [];
   public summary = 0;
   constructor(private valueService: ValueService) {}
 
   @Output() changeCount = new EventEmitter<Number>();
 
   ngOnInit() {
-   this.products = this.valueService.getValues();
-   console.log(this.products);
+   this.valueService.getValues().subscribe((data: Value[]) => {
+     this.values = this.normalizeValue(data);
+   });
   }
 
-  checkProduct(product: Product): Function {
+  checkProduct(value: ViewValue): Function {
     return () => {
-      if (!this.checkedProducts.includes(product)) {
-          this.checkedProducts.push(product);
+      if (!this.checkedValues.includes(value)) {
+          this.checkedValues.push(value);
       } else {
-        this.checkedProducts = this.checkedProducts.filter((item) => {
-          return item !== product;
+        this.checkedValues = this.checkedValues.filter((item) => {
+          return item !== value;
         });
       }
-      const prices = this.checkedProducts.map(p => p.price);
+      const prices = this.checkedValues.map(p => p.price);
       this.summary = +prices.reduce((summ, price) => summ + price, 0).toFixed(2);
     };
   }
 
   AddToCart() {
-    this.products = this.products.filter((product) => {
-      return !this.checkedProducts.includes(product);
+    this.values = this.values.filter((value) => {
+      return !this.checkedValues.includes(value);
     });
-    this.changeCount.emit(this.checkedProducts.length);
+    this.changeCount.emit(this.checkedValues.length);
   }
 
-  getColorRow(product: Product, index: number): string {
-    if (this.checkedProducts.includes(product)) {
+  getColorRow(value: ViewValue, index: number): string {
+    if (this.checkedValues.includes(value)) {
       return 'checkedRow';
     }
     return index % 2 === 0 ? 'evenRow' : 'oddRow';
+  }
+
+  normalizeValue(values: Value[]): ViewValue[] {
+    let normalizedValues = [];
+    values.forEach(value => {
+      const groupName = value.group.name;
+      const productsInGroup = value.skus.map(product => {
+        return {...product, groupName};
+      });
+      normalizedValues = normalizedValues.concat(productsInGroup);
+    });
+    return normalizedValues;
   }
 }

@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import getProducts from '../products.js';
-import Product from '../models/product.model.js';
-const URL = 'https://ssdev.superagent.ru/TestApp/swagger/#/Values/GetWithParent';
+import Value from '../models/value.model';
+const URL = 'https://ssdev.superagent.ru/TestApp/Values/GetWithParent';
 
 @Injectable()
 export class ValueService {
+  value: Value[];
 
   constructor(private http: HttpClient) { }
 
-  getValues(): Product[] {
-    //   return this.http.get(URL);
-    return getProducts();
+  getValues(): Observable<Value[]> {
+   return this.http.get<Value[]>(URL);
   }
 }

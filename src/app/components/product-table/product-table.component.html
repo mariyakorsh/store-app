@@ -1,4 +1,4 @@
-<div class="container" *ngIf="products.length">
+<div class="container" *ngIf="values.length">
   <div class="table-container">
     <table>
       <thead>
@@ -10,14 +10,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products; index as i" [ngClass]="getColorRow(product, i)">
-          <td><input type="checkbox" (change)="checkProduct(product)()" /></td>
-          <td>{{product.group}}</td>
-          <td>{{product.name}}</td>
-          <td>{{product.price}}</td>
+        <tr class="productRow" *ngFor="let value of values; index as i" [ngClass]="getColorRow(value, i)">
+          <td><input type="checkbox" (change)="checkProduct(value)()" /></td>
+          <td>{{value.groupName}}</td>
+          <td>{{value.name}}</td>
+          <td>{{value.price}}</td>
         </tr>
         <tr>
-          <td>Summary</td>
+          <td>Summary:</td>
           <td>{{summary}}</td>
         </tr>
       </tbody>
@@ -27,6 +27,6 @@
     <button (click)="AddToCart()">Add to Cart</button>
   </div>
 </div>
-<div class="emptyTable" *ngIf="!products.length">
+<div class="emptyTable" *ngIf="!values.length">
   THANK YOU FOR YOUR PURCHASE!
 </div>

@@ -8,6 +8,14 @@
         th {
             text-align: left;
         }
+        .productRow {
+            &:hover  {
+                background-color: #b08a85;
+            }
+            input {
+                cursor: pointer;
+            }
+        }
         .evenRow {
             background-color: #fff0e8;
         }
